@@ -3,29 +3,27 @@ import io
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from PIL import Image
-from mb_capcha_ocr import OcrModel
+from vietcombank_captcha import VietcombankCaptcha
 
 # --- CẤU HÌNH FASTAPI ---
 app = FastAPI(
-    title="MB Bank Captcha OCR",
-    description="API captcha MB Bank to base64",
+    title="Vietcombank Captcha OCR",
+    description="API captcha VCB from base64",
     version="1.0.0"
 )
 
 # --- KHỞI TẠO MODEL OCR 1 LẦN ---
-ocr_model = OcrModel()
+ocr_model = VietcombankCaptcha()
 
 # --- ĐỊNH NGHĨA BODY REQUEST ---
 class CaptchaRequest(BaseModel):
     base64: str
 
-
 @app.get("/")
 def health():
     return {"status": "ok"}
 
-
-@app.post("/api/captcha/mbbank")
+@app.post("/api/captcha/vcb")
 def solve_captcha(req: CaptchaRequest):
     b64_str = req.base64
     if "," in b64_str:
